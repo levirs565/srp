@@ -36,6 +36,8 @@ export const createSRPClient = (
       password: string,
       iterations?: number,
     ): Promise<string> => {
+      if (typeof hashAlgorithm == "object")
+        throw Error("Unsupported hash algorithm")
       const s = hexToBuffer(salt); // User's salt (chosen randomly)
       const p = password.normalize("NFKC"); // Cleartext Password
 

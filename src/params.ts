@@ -176,6 +176,6 @@ export const getParams = (
     k, // Multiplier parameter (k = H(N, g) in SRP-6a)
     H, // One-way hash function
     PAD, // Pad function to have the same number of bytes as N
-    hashBytes: hashBytes[hashAlgorithm], // Hash function output length
+    hashBytes: typeof hashAlgorithm == "object" ? hashAlgorithm.bytesLength : hashBytes[hashAlgorithm], // Hash function output length
   };
 };

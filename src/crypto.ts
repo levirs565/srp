@@ -1,4 +1,4 @@
-import { HashAlgorithm } from "./types";
+import { HashAlgorithm, SHAHashAlgorithm } from "./types";
 import { encodeUtf8 } from "./utils";
 
 const webcrypto: Crypto | undefined =
@@ -7,7 +7,7 @@ const webcrypto: Crypto | undefined =
 const unavailableErrorMessage =
   "WebCrypto is only available on Node.js 15+ and supported browsers (in secure context)";
 
-export const hashBytes: Record<HashAlgorithm, number> = {
+export const hashBytes: Record<SHAHashAlgorithm, number> = {
   "SHA-1": 160 / 8,
   "SHA-256": 256 / 8,
   "SHA-384": 384 / 8,
@@ -15,7 +15,7 @@ export const hashBytes: Record<HashAlgorithm, number> = {
 };
 
 // From https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2
-const pbkdf2Iterations: Record<HashAlgorithm, number> = {
+const pbkdf2Iterations: Record<SHAHashAlgorithm, number> = {
   "SHA-1": 720000,
   "SHA-256": 310000,
   "SHA-384": 215000,
@@ -30,12 +30,13 @@ export const digest = (
   hashAlgorithm: HashAlgorithm,
   data: ArrayBuffer,
 ): Promise<ArrayBuffer> =>
+  typeof hashAlgorithm == "object" ? hashAlgorithm.hash(data) :
   !webcrypto || !webcrypto.subtle
     ? Promise.reject(new Error(unavailableErrorMessage))
     : webcrypto.subtle.digest(hashAlgorithm, data);
 
 export const deriveKeyWithPBKDF2 = async (
-  hashAlgorithm: HashAlgorithm,
+  hashAlgorithm: SHAHashAlgorithm,
   salt: ArrayBuffer,
   password: string,
   iterations = pbkdf2Iterations[hashAlgorithm],
