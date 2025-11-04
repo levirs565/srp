@@ -98,7 +98,7 @@ export const createSRPClient = (
 
       // K = H(S)
       // M = H(H(N) xor H(g), H(I), s, A, B, K)
-      const [K, HN, Hg, HI] = await Promise.all([H(S), H(N), H(g), H(I)]);
+      const [K, HN, Hg, HI] = await Promise.all([H(S), H(N), H(PAD(g)), H(I)]);
       const M = await H(HN.xor(Hg), HI, s, A, B, K);
 
       return {
