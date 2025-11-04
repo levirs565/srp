@@ -1,6 +1,6 @@
 {
   "name": "@levirs565/srp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "description": "A modern SRP implementation for Node.js (v15+) and web browsers",
   "author": "Linus Unnebäck <linus@folkdatorn.se>",
